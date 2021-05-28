@@ -1,18 +1,21 @@
 package org.launchcode.hellospring.controllers;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.PublicKey;
+import java.util.ArrayList;
 
 
 @Controller
 public class HelloController {
 
-    @RequestMapping(value = "hello", method = {RequestMethod.GET, RequestMethod.POST})
-    @ResponseBody
-    public String hello(@RequestParam String name) {
-        return "hello, " + name ;
+    @RequestMapping(value = "hello", method =  {RequestMethod.GET, RequestMethod.POST} )
+    public String hello(@RequestParam String name, Model model) {
+        String greeting = "Hola, " + name + "!";
+        model.addAttribute("greeting", greeting);
+        return "hello";
     }
 
     @GetMapping("hello/{name}")
@@ -22,54 +25,44 @@ public class HelloController {
     }
 
     @GetMapping("form")
-    @ResponseBody
     public String helloForm() {
-        return "<html>" +
-                "<body>" +
-                "<title>" +
-                "Form Submit" +
-                "</title>" +
-                "<form action = 'hello' method = 'post'>" +
-                "<input type='text' name='name'>" +
-                "<select name = 'language'>" +
-                "<option value = 'english'> English </option>" +
-                "<option value = 'french'> French </option>" +
-                "<option value = 'italian'> Italian </option>" +
-                "<option value = 'spanish'> Spanish </option>" +
-                "<option value = 'german'> German </option>" +
-                "<input type='submit' value = 'Greet me'>" +
-                "</select>" +
-                "</form>" +
-                "</body>" +
-                "</html>";
+        return "form";
     }
 
-    @PostMapping
-    @ResponseBody
-    public String createMessage(@RequestParam String name, @RequestParam String language) {
+    @GetMapping("hellonames")
+    public String helloNames(Model model) {
+        ArrayList<String> names = new ArrayList<>();
+        names.add("java");
+        names.add("C");
+        names.add("Javascript");
 
-        if (name == null){
-            name = "world";
-        }
-
-        String greetings = "";
-
-        if (language.equals("english")) {
-            greetings = "Hello, ";
-        } else if(language.equals("french")) {
-            greetings = "Bonjour, ";
-        } else if (language.equals("italian")) {
-            greetings = "bourningano, ";
-        } else if (language.equals("spanish")) {
-            greetings = "hola, ";
-        } else if (language.equals("german")) {
-            greetings = "hallo, ";
-        }
-        return greetings + name;
-
+        model.addAttribute("names", names);
+        return "hello-list";
     }
 
-
-
+//    @PostMapping("hello")
+//    @ResponseBody
+//    public String createMessage(@RequestParam String name, @RequestParam String language) {
+//
+//        if (name == null){
+//            name = "world";
+//        }
+//
+//        String greetings = "";
+//
+//        if (language.equals("english")) {
+//            greetings = "Hello, ";
+//        } else if(language.equals("french")) {
+//            greetings = "Bonjour, ";
+//        } else if (language.equals("italian")) {
+//            greetings = "bourningano, ";
+//        } else if (language.equals("spanish")) {
+//            greetings = "hola, ";
+//        } else if (language.equals("german")) {
+//            greetings = "hallo, ";
+//        }
+//        return greetings + name;
+//
+//    }
 
 }
